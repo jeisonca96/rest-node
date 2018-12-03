@@ -1,0 +1,40 @@
+// Verificar Token
+const jwt = require('jsonwebtoken')
+
+let verificarToken = (req, res, next) => {
+    let token = req.get('Authorization')
+
+    jwt.verify(token, process.env.SEED, (er, decoded) => {
+        if (er) {
+            return res.status(401).json({
+                ok: false,
+                er
+            })
+        }
+
+        req.usuario = decoded.usuario
+
+        next()
+    })
+
+}
+
+let verificarRole = (req, res, next) => {
+    let usuario = req.usuario
+
+    if (usuario.role != 'ADMIN_ROLE') {
+        res.status(400).json({
+            ok: false,
+            er: {
+                message: 'Usuario no tiene permitido crear usuarios'
+            }
+        })
+    } else {
+        next()
+    }
+}
+
+module.exports = {
+    verificarToken,
+    verificarRole
+}

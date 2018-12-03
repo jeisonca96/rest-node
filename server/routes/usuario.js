@@ -1,11 +1,12 @@
 const express = require('express')
 const Usuario = require('../models/usuario')
+const auth = require('../middlewares/authorization')
 const bcrypt = require('bcrypt');
 const _ = require('underscore');
 
 const app = express()
 
-app.get('/usuario', function(req, res) {
+app.get('/usuario', auth.verificarToken, (req, res) => {
 
     let desde = Number(req.query.desde) || 0;
     let limite = Number(req.query.limite) || 0;
@@ -31,7 +32,7 @@ app.get('/usuario', function(req, res) {
         })
 })
 
-app.post('/usuario', function(req, res) {
+app.post('/usuario', [auth.verificarToken, auth.verificarRole], (req, res) => {
 
     let body = req.body;
     let usuario = new Usuario({
@@ -55,7 +56,7 @@ app.post('/usuario', function(req, res) {
     })
 })
 
-app.put('/usuario/:id', function(req, res) {
+app.put('/usuario/:id', [auth.verificarToken, auth.verificarRole], (req, res) => {
     let id = req.params.id
     let body = req.body
 
@@ -71,6 +72,14 @@ app.put('/usuario/:id', function(req, res) {
                 er
             })
         }
+        if (!usuarioDB) {
+            return res.status(400).json({
+                ok: false,
+                er: {
+                    message: 'Usuario no encontrado'
+                }
+            })
+        }
         res.json({
             ok: true,
             usuario: usuarioDB
@@ -78,7 +87,7 @@ app.put('/usuario/:id', function(req, res) {
     })
 })
 
-app.delete('/usuario/:id', function(req, res) {
+app.delete('/usuario/:id', [auth.verificarToken, auth.verificarRole], (req, res) => {
     let id = req.params.id;
 
     // Eliminar
