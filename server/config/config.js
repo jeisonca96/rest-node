@@ -20,3 +20,6 @@ process.env.CADUCIDAD_TOKEN = 60 * 60 * 24 * 30;
 
 // Sed semilla encrypt
 process.env.SEED = process.env.SEED || 'seed-desarrollo';
+
+// Google Client ID
+process.env.CLIENT_ID = process.env.CLIENT_ID || '171870069191-ap47bf14pce5k389kghvkrrpghq8rbsr.apps.googleusercontent.com';
