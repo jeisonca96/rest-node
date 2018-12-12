@@ -26,7 +26,7 @@ let verificarRole = (req, res, next) => {
         res.status(400).json({
             ok: false,
             er: {
-                message: 'Usuario no tiene permitido crear usuarios'
+                message: 'Acción no permitida'
             }
         })
     } else {

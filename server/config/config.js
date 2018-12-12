@@ -15,8 +15,7 @@ if (process.env.NODE_ENV === 'dev') {
 process.env.URLDB = urlDB;
 
 // Vencimiento del token
-// 60 Seg, 60 Min, 24 hrs, 30 days
-process.env.CADUCIDAD_TOKEN = 60 * 60 * 24 * 30;
+process.env.CADUCIDAD_TOKEN = '48h';
 
 // Sed semilla encrypt
 process.env.SEED = process.env.SEED || 'seed-desarrollo';
